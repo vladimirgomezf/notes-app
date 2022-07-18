@@ -86,6 +86,8 @@
 </template>
 
 <script>
+const axios = require('axios');
+
 export default {
   name: 'IndexPage',
   data() {
@@ -97,13 +99,35 @@ export default {
       texto: "",
     };
   },
-  mounted(){
-    this.list.push({id:1, check: false, text: "Esta es mi primera nota"})
+  async mounted(){
+    await axios.get('http://localhost:8000/notes/')
+      .then((response) => {
+        response.forEach(item => {
+          this.list.push({
+            'id':item.id,
+            'check': item.hecho,
+            'text': item.content
+          })
+        });
+      })
+      .catch((error) => {
+        console.error(error)
+      })
   },
   methods: {
-    addTask(){
-      const id = this.list.length
-      this.list.push({id, check: false, text: this.texto})
+    async addTask(){
+      await axios.post('http://localhost:8000/notes/', {
+        'content': this.texto,
+        'hecho': false
+      })
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+      // const id = this.list.length
+      // this.list.push({id, check: false, text: this.texto})
       this.texto = ""
     },
   }
