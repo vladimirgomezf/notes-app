@@ -36,3 +36,4 @@ jobs:
           echo test, and deploy your project.
           - name: Setup Node.js environment
           uses: actions/setup-node@v3.4.1
+          npm run dev
