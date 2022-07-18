@@ -5,4 +5,4 @@ from .models import Notes
 class NotesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notes
-        fields = ['content', 'check']
+        fields = ['content', 'hecho']
