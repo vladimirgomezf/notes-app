@@ -26,7 +26,7 @@
 
       <v-card v-show="list.length > 0" class="py-4 flex-col justify-center rounded-t-none space-y-2">
         <div v-for="item in list" :key="item.id" class="flex space-x-2 px-2 py-0">
-          <input type="checkbox" v-model="item.check" v-bind:id="item.id"><span class="flex content-center">{{item.text}}</span>
+          <input type="checkbox" v-model="item.check" v-bind:id="item.id"><span class="flex content-center" :class="{ 'line-through': item.check}">{{item.text}}</span>
         </div>
       </v-card>
 
