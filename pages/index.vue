@@ -9,7 +9,7 @@
               <path d="M3 0C1.355 0 0 1.355 0 3V17C0 18.645 1.355 20 3 20H17C18.645 20 20 18.645 20 17V3C20 1.355 18.645 0 17 0H3ZM3 2H17C17.571 2 18 2.429 18 3V17C18 17.571 17.571 18 17 18H3C2.429 18 2 17.571 2 17V3C2 2.429 2.429 2 3 2ZM9.984 4.986C9.438 4.995 9 5.439 9 5.986C9 5.991 9 5.996 9 6V5.999V8.999H6C5.996 8.999 5.991 8.999 5.986 8.999C5.434 8.999 4.986 9.447 4.986 9.999C4.986 10.551 5.434 10.999 5.986 10.999C5.991 10.999 5.996 10.999 6.001 10.999H9V13.999C9 14.003 9 14.008 9 14.013C9 14.565 9.448 15.013 10 15.013C10.552 15.013 11 14.565 11 14.013C11 14.008 11 14.003 11 13.998V13.999V10.999H14C14.004 10.999 14.009 10.999 14.014 10.999C14.566 10.999 15.014 10.551 15.014 9.999C15.014 9.447 14.566 8.999 14.014 8.999C14.009 8.999 14.004 8.999 13.999 8.999H11V5.999C11 5.995 11 5.99 11 5.985C11 5.433 10.552 4.985 10 4.985C9.995 4.985 9.989 4.985 9.984 4.985H9.985L9.984 4.986Z" fill="#007FFF"/>
             </svg>
           </div>
-          <input type="text" v-model="texto" placeholder="Type to add new task" class="w-full border-none ring-none pr-3 py-2 px-1 mr-2" />
+          <input type="text" v-model="texto" v-on:keyup.enter="addTask()" placeholder="Type to add new task" class="w-full border-none ring-none pr-3 py-2 px-1 mr-2" />
           <div v-show="texto.length > 0" class="grid grid-cols-1 grid-rows-1 place-items-center w-10 min-h-full px-3 opacity-50">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
               <circle cx="12" cy="12" r="12" fill="url(#pattern0)"/>
@@ -93,7 +93,7 @@ export default {
   data() {
     return {
       show: true,
-      text: false,
+      text: true,
       write: true,
       list: [],
       texto: "",
@@ -104,7 +104,7 @@ export default {
   },
   methods: {
     async initialize(){
-    await axios.get('http://localhost:8000/notes/')
+      await axios.get('http://localhost:8000/notes/')
       .then((response) => {
         response.data.forEach(item => {
           this.list.push({
@@ -117,7 +117,7 @@ export default {
       .catch((error) => {
         console.error(error)
       })
-  },
+    },
 
     async addTask(){
       await axios.post('http://localhost:8000/notes/', {
