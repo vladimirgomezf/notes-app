@@ -100,9 +100,13 @@ export default {
     };
   },
   async mounted(){
+    await this.initialize();
+  },
+  methods: {
+    async initialize(){
     await axios.get('http://localhost:8000/notes/')
       .then((response) => {
-        response.forEach(item => {
+        response.data.forEach(item => {
           this.list.push({
             'id':item.id,
             'check': item.hecho,
