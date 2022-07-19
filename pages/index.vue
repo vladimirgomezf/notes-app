@@ -118,7 +118,7 @@ export default {
         console.error(error)
       })
   },
-  methods: {
+
     async addTask(){
       await axios.post('http://localhost:8000/notes/', {
         'content': this.texto,
@@ -133,6 +133,8 @@ export default {
       // const id = this.list.length
       // this.list.push({id, check: false, text: this.texto})
       this.texto = ""
+      this.list = []
+      await this.initialize();
     },
   }
 }
