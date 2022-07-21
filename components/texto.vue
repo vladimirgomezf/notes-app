@@ -1,12 +1,12 @@
 <template>
-    <div>
+    <div class="space-y-2 flex-col items-center">
         <div class="inline-flex" v-for="item in complete" :key="item">
         <!-- {{Object.values(item)[0]}} -->
             <!-- <a href="" class="bg-violet-400 rounded-2xl p-1">{{Object.entries(item)[0][0]}}</a> -->
             <span v-if="Object.entries(item)[0][0] === 'tag'" class="bg-violet-400 rounded-full px-3 bg-opacity-50 text-violet-500 font-bold text-sm pl-1 inline-flex items-center">{{Object.values(item)[0]}}</span>
             <a v-bind:href="'http://twitter.com/'+Object.values(item)[0]" target="_blank" v-if="Object.entries(item)[0][0] === 'people'" class="bg-green-300 rounded-full px-3 bg-opacity-50 inline-flex items-center">
                 <!--  -->
-                <img class="pr-1" src="person.png" />
+                <img class="pr-1 w-6 h-5" src="person.png" />
                 <span class="text-green-500 font-bold text-sm pl-1">Natasha</span>
             </a>
             <a v-bind:href="'mailto:'+Object.values(item)[0].trim()" target="_blank" v-if="Object.entries(item)[0][0] === 'mail'" class="bg-orange-300 rounded-full px-3 bg-opacity-50 inline-flex items-center">
