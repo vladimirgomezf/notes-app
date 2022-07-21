@@ -28,7 +28,7 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/eslint
-    '@nuxtjs/eslint-module',
+    // '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
     '@nuxt/postcss8',
@@ -42,7 +42,21 @@ export default {
     '@nuxtjs/pwa',
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
+    'nuxt-breakpoints',
   ],
+
+   // Another way to use options
+  breakpoints: {
+    // default options
+    sm: 576,
+    md: 768,
+    lg: 992,
+    xl: 1200,
+    options: {
+      polyfill: true,
+      throttle: 200
+    }
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
