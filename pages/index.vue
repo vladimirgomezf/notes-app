@@ -26,14 +26,14 @@
 
       <v-card v-show="list.length > 0" class="py-4 flex-col justify-center rounded-t-none space-y-2">
         <div v-for="item in list" :key="item.id" class="flex space-x-2 px-2 py-0">
-          <input type="checkbox" v-model="item.check" v-bind:id="item.id"><span class="flex content-center" :class="{ 'line-through': item.check}">{{item.text}}</span>
+          <input type="checkbox" v-model="item.check" v-bind:id="item.id"><span class="flex content-center" :class="{ 'line-through': item.check}"> <Texto :text="item.text" /> </span>
         </div>
       </v-card>
 
       <v-card v-show="texto.length > 0" class="py-4 flex-col justify-center rounded-t-none">
         <div class="inline-flex w-full h-auto mx-auto lg:px-4 lg:space-x-2">
           <div class="flex-col">
-            <div class="inline-flex space-x-1">
+            <div class="inline-flex space-x-1 pl-2">
               <span class="inline-flex px-3 lg:space-x-3 border-gray-400 rounded-md h-10 lg:px-6 bg-gray-100 place-items-center opacity-50">
                 <svg class="place-self-center" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M13 0C12.996 0 12.991 0 12.986 0C12.434 0 11.986 0.448 11.986 1C11.986 1.552 12.434 2 12.986 2C12.991 2 12.996 2 13.001 2H16.586L11.293 7.293C10.311 8.236 11.765 9.689 12.707 8.707L18 3.414V7C18 7.004 18 7.009 18 7.014C18 7.566 18.448 8.014 19 8.014C19.552 8.014 20 7.566 20 7.014C20 7.009 20 7.004 20 6.999V7V1C20 0.448 19.552 0 19 0H13V0ZM7.97998 10.99C7.71998 10.998 7.47398 11.106 7.29298 11.293L1.99998 16.586V13C1.99998 12.996 1.99998 12.991 1.99998 12.986C1.99998 12.434 1.55198 11.986 0.999977 11.986C0.994977 11.986 0.988977 11.986 0.983977 11.986H0.984977C0.438977 11.995 0.000976562 12.439 0.000976562 12.986C0.000976562 12.991 0.000976562 12.996 0.000976562 13V12.999V18.999C0.000976562 19.551 0.448977 19.999 1.00098 19.999H7.00098C7.00498 19.999 7.00998 19.999 7.01498 19.999C7.56698 19.999 8.01498 19.551 8.01498 18.999C8.01498 18.447 7.56698 17.999 7.01498 17.999C7.00998 17.999 7.00498 17.999 6.99998 17.999H3.41498L8.70798 12.706C9.36198 12.07 8.89298 10.962 7.98098 10.989L7.97998 10.99Z" fill="#4E5D78"/>
@@ -91,56 +91,62 @@
 </template>
 
 <script>
+import Texto from '~/components/texto.vue';
+// import nuxtConfig from '~/nuxt.config';
+
 const axios = require('axios');
 
 export default {
-  name: 'IndexPage',
-  data() {
-    return {
-      show: true,
-      text: true,
-      write: true,
-      list: [],
-      texto: "",
-    };
-  },
-  async mounted(){
-    await this.initialize();
-  },
-  methods: {
-    async initialize(){
-      await axios.get('http://localhost:8000/notes/')
-      .then((response) => {
-        response.data.forEach(item => {
-          this.list.push({
-            'id':item.id,
-            'check': item.hecho,
-            'text': item.content
-          })
-        });
-      })
-      .catch((error) => {
-        console.error(error)
-      })
+    name: "IndexPage",
+    data() {
+        return {
+            write: true,
+            list: [],
+            texto: "",
+        };
     },
-
-    async addTask(){
-      await axios.post('http://localhost:8000/notes/', {
-        'content': this.texto,
-        'hecho': false
-      })
-      .then((response) => {
-        console.log(response)
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-      // const id = this.list.length
-      // this.list.push({id, check: false, text: this.texto})
-      this.texto = ""
-      this.list = []
-      await this.initialize();
+    async mounted() {
+        await this.initialize();
     },
-  }
+    computed: {
+        text() {
+            return this.$breakpoints.lLg;
+        }
+    },
+    methods: {
+        async initialize() {
+            this.list = [];
+            await axios.get("http://localhost:8000/notes/")
+                .then((response) => {
+                response.data.forEach(item => {
+                    this.list.push({
+                        "id": item.id,
+                        "check": item.hecho,
+                        "text": item.content
+                    });
+                });
+            })
+                .catch((error) => {
+                console.error(error);
+            });
+        },
+        async addTask() {
+            await axios.post("http://localhost:8000/notes/", {
+                "content": this.texto,
+                "hecho": false
+            })
+                .then((response) => {
+                console.log(response);
+            })
+                .catch((error) => {
+                console.error(error);
+            });
+            // const id = this.list.length
+            // this.list.push({id, check: false, text: this.texto})
+            this.texto = "";
+            await this.initialize();
+        },
+    },
+    components: { Texto }
 }
 </script>
